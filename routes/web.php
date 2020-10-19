@@ -22,3 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/management', function() {
     return view('management.index');
 });
+
+
+Route::resource('management/category', 'Management\CategoryController');
