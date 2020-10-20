@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             @include('management.inc.sidebar')
             <div class="col-md-9">
-                <i class="fas fa-align-justify"></i> Categoria
-                <a class="btn btn-success btn-sm float-right" href="/management/category/create"><i class="fas fa-plus"></i> Criar categoria</a>
+                <i class="fas fa-drumstick-bite"></i> Cardápio
+                <a class="btn btn-success btn-sm float-right" href="/management/menu/create"><i class="fas fa-plus"></i> Criar Cardápio</a>
                 <hr>
                 @if (Session()->has('status'))
                     <div class="alert alert-success">
@@ -18,31 +18,39 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col">Imagem</th>
+                            <th scope="col">Descrição</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Apagar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($categories as $category)
+                        @foreach ($menus as $menu)
                             <tr>
-                                <th scope="row">{{$category->id}}</th>
-                                <td>{{$category->name}}</td>
+                                <td>{{$menu->id}}</td>
+                                <td>{{$menu->name}}</td>
+                                <td>{{$menu->price}}</td>
                                 <td>
-                                    <a href="/management/category/{{$category->id}}/edit " class="btn btn-warning">Editar</a>
+                                    <img src="{{asset('menu_images')}}/{{$menu->image}}" alt="{{$menu->name}}" width="120px" height="100px" class="image-thumbnail">
                                 </td>
+                                <td>{{$menu->description}}</td>
+                                <td>{{$menu->category->name}}</td>
+                                <td><a href="/management/menu/{{$menu->id}}/edit" class="btn btn-warning btn-sm">Editar</a></td>
                                 <td>
-                                    <form action="/management/category/{{$category->id}}" method="POST">
+                                    <form action="/management/menu/{{$menu->id}}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <input type="submit" value="Apagar" class="btn btn-danger">
+                                        <input type="submit" value="Apagar" class="btn btn-danger btn-sm">
                                     </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{$categories->links()}}
+                
             </div>
         </div>
     </div>
