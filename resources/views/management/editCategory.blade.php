@@ -30,7 +30,7 @@
                         <label for="categoryName">Nome da categoria</label>
                         <input type="text" name="name" value="{{$category->name}}" class="form-control" placeholder="Categoria" id="categoryName">
                     </div>
-                    <button type="submit" class="btn btn-primary" >Atualizar</button>
+                    <button type="submit" class="btn btn-warning" >Editar</button>
                 </form>
             </div>
         </div>

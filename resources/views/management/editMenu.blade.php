@@ -58,7 +58,7 @@
                         <label for="Description">Descrição</label>
                         <input type="text" value="{{$menu->description}}" name="description" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-primary" >Editar</button>
+                    <button type="submit" class="btn btn-warning" >Editar</button>
                 </form>
             </div>
         </div>
