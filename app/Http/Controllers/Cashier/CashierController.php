@@ -26,9 +26,13 @@ class CashierController extends Controller
             $html .= 
             '<button class="btn btn-primary btn-table" data-id="'.$table->id.'" data-name="'.$table->name.'">
             <img class="img-fluid" src="'.url('/images/table-2.svg').'"/>
-            <br>
-            <span class="badge badge-success"> '.$table->name.'</span>
-            </button>';
+            <br>';
+            if($table->status == 'Disponível') { 
+                $html .= '<span class="badge badge-success"> '.$table->name.'</span>';
+            } else {
+                $html .= '<span class="badge badge-danger "> '.$table->name.'</span>';
+            }
+            $html .= '</button>';
             $html .= '</div>';
         }
         return $html;
@@ -112,19 +116,100 @@ class CashierController extends Controller
                         </tr>
                     </thead>
                     <tbody>';
-        
+        $showBtnPayment = true;
         foreach($saleDetail as $sale) {
             $html .= '
                 <tr>                        <td>'.$sale->menu_id.'</td>
                     <td>'.$sale->menu_name.'</td>
                     <td>'.$sale->quantity.'</td>
                     <td>'.$sale->menu_price.'</td>
-                    <td>'.($sale->menu_price * $sale->quantity).'</td>
-                    <td>'.$sale->status.'</td>
-                </tr>
-                ';
+                    <td>'.($sale->menu_price * $sale->quantity).'</td>';
+                    if($sale->status == "Não Confirmado") {
+                        $showBtnPayment = false;
+                        $html .= '<td><a data-id="'.$sale->id.'" class="btn btn-danger btn-delete-saledetail"><i class="fas fa-trash-alt"></i></a></td>';
+                    } else {
+                        $html .= '<td><i class="fas fa-check-circle"></i></td>';
+                    }
+                $html .= '</tr>';
         }
             $html .= '</tbody></table></div>';
+
+            $sale = Sale::find($sale_id);
+            $html .= '<hr><h3>Total do pedido: R$ '.number_format($sale->total_price).'</h3>';
+
+            if($showBtnPayment) {
+                $html .= '<button data-id="'.$sale_id.'" data-totalAmount="'.$sale->total_price.'" class="btn btn-success btn-block btn-payment"  data-toggle="modal" data-target="#exampleModal">Pagamento</button>';
+            } else {
+                $html .= '<button data-id="'.$sale_id.'" class="btn btn-warning btn-block btn-confirm-order">Confirmar pedido</button>';
+            }
+
             return $html;
+    }
+
+    public function getSaleDetailsByTable($table_id) {
+        $sale = Sale::where('table_id', $table_id)->where('sale_status', 'Não pago')->first();
+        $html = '';
+        if($sale) {
+            $sale_id = $sale->id;
+            $html .= $this->getSaleDetail($sale_id);
+        } else {
+            $html .= 'Não encontrado nenhum pedido para a mesa selecionada.';
+        }
+        return $html;
+    }
+
+    public function confirmOrderStatus(Request $request) {
+        $sale_id = $request->sale_id;
+        $saleDetails = SalesDetail::where('sale_id', $sale_id)->update(['status' => 'Confirmado']);
+        $html = $this->getSaleDetail($sale_id);
+        return $html;
+    }
+
+    public function deleteSaleDetail(Request $request) {
+        $saleDetail_id = $request->saleDetail_id;
+        $saleDetail = SalesDetail::find($saleDetail_id);
+        $sale_id = $saleDetail->sale_id;
+        $menu_price = ($saleDetail->menu_price * $saleDetail->quantity);
+        $saleDetail->delete();
+
+        $sale = Sale::find($sale_id);
+        $sale->total_price = $sale->total_price - $menu_price;
+        $sale->save();
+         //checar se existe algum item selecionado na venda
+        $saleDetails = SalesDetail::where('sale_id', $sale_id)->first();
+        if($saleDetails) {
+            $html = $this->getSaleDetail($sale_id);
+        } else {
+            $html = 'Não encontrado nenhum pedido para a mesa selecionada.';
+        }
+        return $html;
+    }
+
+    public function savePayment(Request $request) {
+        $saleID = $request->saleId;
+        $recievedAmount = $request->recievedAmount;
+        $paymentType = $request->paymentType;
+
+        //atializar informação de venda 
+        
+        $sale = Sale::find($saleID);
+        $sale->total_recieved = $recievedAmount;
+        $sale->change = $recievedAmount - $sale->total_price;
+        $sale->payment_type = $paymentType;
+        $sale->sale_status = 'Pago';
+        $sale->save();
+
+        //atualizar a mesa para disponível
+        $table = Table::find($sale->table_id);
+        $table->status = 'Disponível';
+        $table->save();
+                
+        return "/cashier/showReceipt/".$saleID;
+    }
+
+    public function showReceipt($sale_id) {
+        $sale = Sale::find($sale_id);
+        $saleDetails = SalesDetail::where('sale_id', $sale_id)->get();
+        return view('cashier.showReceipt')->with('sale', $sale)->with('saleDetails', $saleDetails);
     }
 }
