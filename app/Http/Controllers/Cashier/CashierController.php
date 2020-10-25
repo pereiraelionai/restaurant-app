@@ -107,7 +107,7 @@ class CashierController extends Controller
                 <table class="table table-scripped table-dark">
                     <thead>
                         <tr>
-                            <th scope="col">Código</th>
+                            <th scope="col">Cod</th>
                             <th scope="col">Item</th>
                             <th scope="col">Qtd</th>
                             <th scope="col">Preço</th>
@@ -118,10 +118,16 @@ class CashierController extends Controller
                     <tbody>';
         $showBtnPayment = true;
         foreach($saleDetail as $sale) {
+
+            $decreaseButton = '<button class="btn btn-danger btn-sm btn-decrease-quantity" disabled>-</button>';
+            if($sale->quantity > 1) {
+                $decreaseButton = '<button data-id="'.$sale->id.'" class="btn btn-danger btn-sm btn-decrease-quantity">-</button>';
+            }
+
             $html .= '
                 <tr>                        <td>'.$sale->menu_id.'</td>
                     <td>'.$sale->menu_name.'</td>
-                    <td>'.$sale->quantity.'</td>
+                    <td>'.$decreaseButton.' '.$sale->quantity.' '.'<button data-id="'.$sale->id.'" class="btn btn-primary btn-sm btn-increase-quantity">+</button></td>
                     <td>'.$sale->menu_price.'</td>
                     <td>'.($sale->menu_price * $sale->quantity).'</td>';
                     if($sale->status == "Não Confirmado") {
@@ -211,5 +217,35 @@ class CashierController extends Controller
         $sale = Sale::find($sale_id);
         $saleDetails = SalesDetail::where('sale_id', $sale_id)->get();
         return view('cashier.showReceipt')->with('sale', $sale)->with('saleDetails', $saleDetails);
+    }
+
+    public function increaseQuantity(Request $request) {
+        $saleDetail_id = $request->saleDetail_id;
+        //atualizando quantidade
+        $saleDetail = SalesDetail::where('id', $saleDetail_id)->first();
+        $saleDetail->quantity = $saleDetail->quantity + 1;
+        $saleDetail->save();
+        //atualizando total geral
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        $sale->total_price = $sale->total_price + $saleDetail->menu_price;
+        $sale->save();
+
+        $html = $this->getSaleDetail($saleDetail->sale_id);
+        return $html;
+    }
+
+    public function decreaseQuantity(Request $request) {
+        $saleDetail_id = $request->saleDetail_id;
+        //atualizando quantidade
+        $saleDetail = SalesDetail::where('id', $saleDetail_id)->first();
+        $saleDetail->quantity = $saleDetail->quantity - 1;
+        $saleDetail->save();
+        //atualizando total geral
+        $sale = Sale::where('id', $saleDetail->sale_id)->first();
+        $sale->total_price = $sale->total_price - $saleDetail->menu_price;
+        $sale->save();
+
+        $html = $this->getSaleDetail($saleDetail->sale_id);
+        return $html;
     }
 }

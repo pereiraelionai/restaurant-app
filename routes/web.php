@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/cashier', 'Cashier\CashierController@index');
     Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierController@getMenuByCategory');
     Route::post('/cashier/deleteSaleDetail', 'Cashier\CashierController@deleteSaleDetail');
+    Route::post('/cashier/increase-quantity', 'Cashier\CashierController@increaseQuantity');
+    Route::post('/cashier/decrease-quantity', 'Cashier\CashierController@decreaseQuantity');
     Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
     Route::get('/cashier/showReceipt/{sale_id}', 'Cashier\CashierController@showReceipt');
 });
