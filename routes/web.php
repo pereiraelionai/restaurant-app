@@ -47,4 +47,3 @@ Route::middleware(['auth', 'verifyAdmin'])->group(function() {
     Route::get('/report/show', 'Report\ReportController@show');
     Route::get('/report/show/export', 'Report\ReportController@export');
 });
-//criando teste do git
