@@ -15,11 +15,11 @@ class AddRoleFeildToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
+            $table->string('role')->default('admin')->after('name');
         });
     }
 
     /**
-     * Reverse the migrations.
      *
      * @return void
      */
@@ -27,6 +27,7 @@ class AddRoleFeildToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
+            $table->dropColumn('role');
         });
     }
 }
