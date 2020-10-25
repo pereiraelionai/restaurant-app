@@ -36,3 +36,7 @@ Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierControlle
 Route::post('/cashier/deleteSaleDetail', 'Cashier\CashierController@deleteSaleDetail');
 Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
 Route::get('/cashier/showReceipt/{sale_id}', 'Cashier\CashierController@showReceipt');
+
+Route::get('/report', 'Report\ReportController@index');
+Route::get('/report/show', 'Report\ReportController@show');
+Route::get('/report/show/export', 'Report\ReportController@export');
