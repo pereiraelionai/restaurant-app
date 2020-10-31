@@ -17,7 +17,7 @@
                     <div class="row text-center">
                         @if (Auth::user()->checkAdmin())
                         <div class="col-sm-4">
-                            <a href="/management">
+                            <a href="{{Auth::user()->db_chave == 'restaurante' ? "master" : "management"}}">
                                 <h4>Gerenciar</h4>
                                 <img width="70px" src="{{asset('images/product-management.svg')}}">
                             </a>

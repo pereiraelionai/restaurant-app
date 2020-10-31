@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verifyAdmin' => \App\Http\Middleware\verifyAdmin::class,
         'tenant.middleware' => \App\Http\Middleware\Tenant\TenantMiddleware::class,
+        'check_chave' => \App\Http\Middleware\Tenant\CheckChaveMain::class,
     ];
 
     /**

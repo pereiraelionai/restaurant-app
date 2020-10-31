@@ -1,7 +1,9 @@
 <?php
 
-    Route::get('/tenant', function() {
-        return 'Aqui você pode criar um formulários de cadastro de novos usuários';
-    });
+    Route::get('/usuario/create', 'Tenant\CompanyController@create');
+
+    Route::post('/usuario', 'Tenant\CompanyController@store');
+
+    Route::get('/', 'Tenant\CompanyController@index');
 
 ?>

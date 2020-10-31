@@ -22,6 +22,20 @@ class ManagerTenant
         Schema::connection('tenant')->getConnection()->reconnect();
     }
 
+    public function setConnectionRest() {
+
+        DB::purge('tenant');
+
+        config()->set('database.connections.tenant.host', 'localhost');
+        config()->set('database.connections.tenant.database', 'restaurante');
+        config()->set('database.connections.tenant.username', 'root');
+        config()->set('database.connections.tenant.password', '');
+
+        DB::reconnect('tenant');
+
+        Schema::connection('tenant')->getConnection()->reconnect();
+    }
+
 }
 
 ?>

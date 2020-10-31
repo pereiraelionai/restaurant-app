@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Management;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Tenant\ManagerTenant;
 
 class UserController extends Controller
 {
@@ -37,20 +39,39 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
+        $db_chave = Auth::user()->db_chave;
+
         $request->validate([
             'name' => 'required|unique:users|max:255',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:6',
-            'role' => 'required'
+            'role' => 'required',
         ]);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = $request->role;
+        $user->db_chave = $db_chave;
         $user->save();
         $request->session()->flash('status', $request->name . ' foi criado com sucesso');
+
+        if($db_chave != 'restaurante') {
+
+            app(ManagerTenant::class)->setConnectionRest();
+
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = $request->role;
+            $user->db_chave = $db_chave;
+            $user->save();
+            $request->session()->flash('status', $request->name . ' foi criado com sucesso');
+        } 
+        
         return redirect('/management/user');
 
     }

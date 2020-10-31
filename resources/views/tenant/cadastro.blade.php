@@ -3,9 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            @include('management.inc.sidebar')
+            @include('management.inc.sidebar-tenant')
             <div class="col-md-8">
-                <i class="fas fa-users"></i> Criar usuário
+                <i class="fas fa-user-plus"></i> Criar usuário
                 <hr>
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -16,11 +16,15 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/management/user" method="POST">
+                <form action="/master/usuario" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="name">Nome</label>
                         <input type="text" name="name" class="form-control" placeholder="Nome" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="db_chave">Chave</label>
+                        <input type="text" name="db_chave" class="form-control" placeholder="Chave" id="db_chave">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -33,8 +37,7 @@
                     <div class="form-group">
                         <label for="role">Função</label>
                         <select name="role"class="form-control">
-                            <option value="admin">Admin</option>
-                            <option value="caixa/garçom">Caixa/Garçom</option>
+                            <option value="admin-master">Admin-master</option>
                         </select>
                     </div>
 
