@@ -35,7 +35,7 @@
                             <td width="180" >{{$saleDetail->menu_name}}</td>
                             <td width="50" >{{$saleDetail->quantity}}</td>
                             <td width="55" >{{$saleDetail->menu_price}}</td>
-                            <td width="65" >{{$saleDetail->menu_price * $saleDetail->quantity}}</td>                            
+                            <td width="65" >{{number_format(($saleDetail->menu_price * $saleDetail->quantity), 2)}}</td>                            
                         </tr>
                     @endforeach
                 </tbody>

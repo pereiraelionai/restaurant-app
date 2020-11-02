@@ -18,7 +18,7 @@ class CreateSalesDetailsTable extends Migration
             $table->integer('sale_id');
             $table->integer('menu_id');
             $table->string('menu_name');
-            $table->integer('menu_price');
+            $table->decimal('menu_price', 8, 2);
             $table->integer('quantity');
             $table->string('status')->default('Não Confirmado');
             $table->timestamps();

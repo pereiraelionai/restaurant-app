@@ -129,7 +129,7 @@ class CashierController extends Controller
                     <td>'.$sale->menu_name.'</td>
                     <td>'.$decreaseButton.' '.$sale->quantity.' '.'<button data-id="'.$sale->id.'" class="btn btn-primary btn-sm btn-increase-quantity">+</button></td>
                     <td>'.$sale->menu_price.'</td>
-                    <td>'.($sale->menu_price * $sale->quantity).'</td>';
+                    <td>'.number_format(($sale->menu_price * $sale->quantity), 2).'</td>';
                     if($sale->status == "Não Confirmado") {
                         $showBtnPayment = false;
                         $html .= '<td><a data-id="'.$sale->id.'" class="btn btn-danger btn-delete-saledetail"><i class="fas fa-trash-alt"></i></a></td>';

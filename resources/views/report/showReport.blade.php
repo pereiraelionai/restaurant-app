@@ -68,7 +68,7 @@
                                             <td>{{$saleDetail->menu_name}}</td>
                                             <td>{{$saleDetail->quantity}}</td>
                                             <td>R$ {{$saleDetail->menu_price}}</td>
-                                            <td>R$ {{$saleDetail->menu_price * $saleDetail->quantity}}</td>
+                                            <td>R$ {{number_format($saleDetail->menu_price * $saleDetail->quantity, 2)}}</td>
                                         </tr>
                                     @endforeach
                                 @endforeach

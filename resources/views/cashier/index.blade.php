@@ -50,6 +50,11 @@
             </div>
             <div class="form-check">
                 <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="payment" value="Débito" id="debit">Débito
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="payment" value="Crédito" id="credit">Cartão de crédito
                 </label>
             </div>
