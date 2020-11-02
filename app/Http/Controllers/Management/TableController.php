@@ -36,10 +36,15 @@ class TableController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        $msg = [
+            'name.required' => 'Preencha o nome da mesa',
+            'name.unique' => 'A mesa digitada já existe',
+            'name.max' => 'A mesa deve ter no máximo 30 caracteres'
+        ];
         $request->validate([
-            'name' => 'required|unique:tables|max:255'
-        ]);
+            'name' => 'required|unique:tables|max:30'
+        ], $msg);
         $table = new Table();
         $table->name = $request->name;
         $table->save();
@@ -78,10 +83,15 @@ class TableController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $msg = [
+            'name.required' => 'Preencha o nome da mesa',
+            'name.unique' => 'A mesa digitada já existe',
+            'name.max' => 'A mesa deve ter no máximo 30 caracteres'
+        ];
         $request->validate([
-            'name' => 'required|unique:tables|max:255'
-        ]);
+            'name' => 'required|unique:tables|max:30'
+        ], $msg);
         $table = Table::find($id);
         $table->name = $request->name;
         $table->save();

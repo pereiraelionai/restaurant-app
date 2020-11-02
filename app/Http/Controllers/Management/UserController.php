@@ -40,15 +40,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {   
+        $msg = [
+            'name.required' => 'O campo nome é obrigatório',
+            'name.unique' => 'O nome digitado já existe',
+            'name.max' => 'O nome deve ter no máximo 80 letras',
+            'name.min' => 'O nome deve ter no máximo 3 letras',
+            'email.required' => 'O campo email é obrigatório',
+            'email.email' => 'Verifique o email digitado',
+            'email.unique' => 'O email digitado já existe',
+            'email.max' => 'O email deve ter no máximo 80 caracteres',
+            'email.min' => 'O email deve ter no mínimo 5 caracteres',
+            'password.required' => 'O campo senha é obrigatório',
+            'password.min' => 'A senha deve ter no mínimo 6 caracteres',
+            'role' => 'O campo função é obrigatório'
+        ];
 
         $db_chave = Auth::user()->db_chave;
 
         $request->validate([
-            'name' => 'required|unique:users|max:255',
-            'email' => 'required|email|unique:users|max:255',
+            'name' => 'required|unique:users|max:80|min:5',
+            'email' => 'required|email|unique:users|max:80',
             'password' => 'required|min:6',
             'role' => 'required',
-        ]);
+        ], $msg);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -107,13 +121,27 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $msg = [
+            'name.required' => 'O campo nome é obrigatório',
+            'name.unique' => 'O nome digitado já existe',
+            'name.max' => 'O nome deve ter no máximo 80 letras',
+            'name.min' => 'O nome deve ter no máximo 3 letras',
+            'email.required' => 'O campo email é obrigatório',
+            'email.email' => 'Verifique o email digitado',
+            'email.unique' => 'O email digitado já existe',
+            'email.max' => 'O email deve ter no máximo 80 caracteres',
+            'email.min' => 'O email deve ter no mínimo 5 caracteres',
+            'password.required' => 'O campo senha é obrigatório',
+            'password.min' => 'A senha deve ter no mínimo 6 caracteres',
+            'role' => 'O campo função é obrigatório'
+        ];
         $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'name' => 'required|max:80',
+            'email' => 'required|email|max:80',
             'password' => 'required|min:6',
             'role' => 'required'
-        ]);
+        ], $msg);
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;

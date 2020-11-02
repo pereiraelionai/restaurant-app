@@ -49,7 +49,7 @@ class CashierController extends Controller
                     <br>
                     '.$menu->name.'
                     <br>
-                    R$'.number_format($menu->price).'
+                    R$'.number_format($menu->price, 2).'
                 </a>
             </div>
             ';
@@ -141,7 +141,7 @@ class CashierController extends Controller
             $html .= '</tbody></table></div>';
 
             $sale = Sale::find($sale_id);
-            $html .= '<hr><h3>Total do pedido: R$ '.number_format($sale->total_price).'</h3>';
+            $html .= '<hr><h3>Total do pedido: R$ '.number_format($sale->total_price, 2).'</h3>';
 
             if($showBtnPayment) {
                 $html .= '<button data-id="'.$sale_id.'" data-totalAmount="'.$sale->total_price.'" class="btn btn-success btn-block btn-payment"  data-toggle="modal" data-target="#exampleModal">Pagamento</button>';

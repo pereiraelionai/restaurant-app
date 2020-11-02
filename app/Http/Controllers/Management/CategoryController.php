@@ -37,9 +37,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {   
+        $msg = [
+        'name.required' => 'Preencha o campo nome',
+        'name.unique' => 'A categoria digitada já existe',
+        'name.max' => 'A categoria deve ter no máximo 30 caracteres',
+        'name.min' => 'A categoria deve ter no mínimo 3 letras'
+    ];
         $request->validate([
-            'name' => 'required|unique:categories|max:50'
-        ]);
+            'name' => 'required|unique:categories|max:30|min:3'
+        ], $msg);
         $category = new Category;
         $name = $request->name;
         $category->name = $name;
@@ -79,9 +85,15 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $msg = [
+            'name.required' => 'Preencha o campo nome',
+            'name.unique' => 'A categoria digitada já existe',
+            'name.max' => 'A categoria deve ter no máximo 30 caracteres',
+            'name.min' => 'A categoria deve ter no mínimo 3 letras'
+        ];
         $request->validate([
-            'name' => 'required|unique:categories|max:50'
+            'name' => 'required|unique:categories|max:30|min:3'
         ]);
         $category = Category::find($id);
         $category->name = $request->name;

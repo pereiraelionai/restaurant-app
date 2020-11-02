@@ -228,7 +228,8 @@
             var total_amount = $(".btn-payment").attr('data-totalAmount');
             var recievedAmount = $(this).val();
             var changeAmount = recievedAmount - total_amount;
-            $(".changeAmount").html("Troco: R$ " + changeAmount);
+            var arrendondado = parseFloat(changeAmount.toFixed(2))
+            $(".changeAmount").html("Troco: R$ " + arrendondado);
 
             //checar se o valor do pagamento é suficiente e habilitar botão pagar
             if(changeAmount >=0) {

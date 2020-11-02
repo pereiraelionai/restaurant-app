@@ -31,8 +31,9 @@
                                 </div>
                                 <input type="text" name="price" class="form-control" aria-label="Amount(to the nearest dollor)">
                                 <div class="inout-grooup-append">
-                                    <span class="input-group-text">,00</span>
+                                    <span class="input-group-text">,</span>
                                 </div>
+                                <input type="text" name="price_cent" class="form-control" aria-label="Amount(to the nearest dollor)">
                             </div>
                         </div>
                         <div class="col-8">
@@ -57,8 +58,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Description">Descrição</label>
-                        <input type="text" name="description" class="form-control">
+                        <label for="description">Descrição</label>
+                        <textarea class="form-control" name="description" id="description" cols="60" rows="10"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" >Salvar</button>
                 </form>
