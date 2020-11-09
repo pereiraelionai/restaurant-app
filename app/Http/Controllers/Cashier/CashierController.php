@@ -147,6 +147,7 @@ class CashierController extends Controller
                 $html .= '<button data-id="'.$sale_id.'" data-totalAmount="'.$sale->total_price.'" class="btn btn-success btn-block btn-payment"  data-toggle="modal" data-target="#exampleModal">Pagamento</button>';
             } else {
                 $html .= '<button data-id="'.$sale_id.'" class="btn btn-warning btn-block btn-confirm-order">Confirmar pedido</button>';
+                $html .= '<button data-id="'.$sale_id.'" class="btn btn-secondary btn-block btn-send" id="send">Enviar pedido para cozinha</button>';
             }
 
             return $html;
@@ -211,6 +212,18 @@ class CashierController extends Controller
         $table->save();
                 
         return "/cashier/showReceipt/".$saleID;
+    }
+
+    public function sendCook(Request $request) {
+        $saleID = $request->saleId;
+                
+        return "/cashier/showcook/".$saleID;
+    }
+
+    public function showCook($sale_id) {
+        $sale = Sale::find($sale_id);
+        $saleDetails = SalesDetail::where('sale_id', $sale_id)->get();
+        return view('cashier.sendcook')->with('sale', $sale)->with('saleDetails', $saleDetails);
     }
 
     public function showReceipt($sale_id) {

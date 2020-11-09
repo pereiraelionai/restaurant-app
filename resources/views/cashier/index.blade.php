@@ -270,6 +270,28 @@
             })
         })
 
+        //enviar pedido para cozinha
+        $("#order-detail").on("click", ".btn-send", function() {
+            var saleId = $(this).data('id')
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                data: {
+                    "_token:" : $('meta[name="csrf-token"]').attr('content'),
+                    "saleId" : saleId,
+                },
+                url: "/cashier/sendcook",
+                success: function(data) {
+                    window.location.href = data;
+                    console.log(data)
+                }
+            })
+        })    
+
     })
 </script>
 @endsection

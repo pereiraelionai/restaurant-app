@@ -29,6 +29,8 @@ Route::middleware(['tenant.middleware'])->group(function() {
         Route::post('/cashier/decrease-quantity', 'Cashier\CashierController@decreaseQuantity');
         Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
         Route::get('/cashier/showReceipt/{sale_id}', 'Cashier\CashierController@showReceipt');
+        Route::get('/cashier/showcook/{sale_id}', 'Cashier\CashierController@showCook');
+        Route::post('/cashier/sendcook', 'Cashier\CashierController@sendCook');
     });
     
     Route::middleware(['auth', 'verifyAdmin'])->group(function() {
